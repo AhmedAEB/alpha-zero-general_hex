@@ -15,7 +15,7 @@ class Board():
     def __init__(self, n):
         "Set up initial board configuration."
         self.n = n
-        self.legal_moves = set()
+       # self.legal_moves = set()
         self.can_swap = True
         
         # Create the empty board array.
@@ -24,9 +24,9 @@ class Board():
             self.pieces[i] = [0]*self.n
             
         # Initialize the legal moves.
-        for y in range(self.n):
-            for x in range(self.n):
-                self.legal_moves.add((x,y))
+        # for y in range(self.n):
+        #     for x in range(self.n):
+        #         self.legal_moves.add((x,y))
         
     # add [][] indexer syntax to the Board
     def __getitem__(self, index): 
@@ -36,7 +36,14 @@ class Board():
         """Returns all the legal moves for the given color.
         (1 for white, -1 for black
         """
-        return list(self.legal_moves) #TODO: Maybe do not return as list
+        moves = set()  # stores the legal moves.
+        
+        # Get all empty locations.
+        for y in range(self.n):
+            for x in range(self.n):
+                if self[x][y] == 0:
+                    moves.add((x, y))
+        return list(moves)
 
     def has_legal_moves(self):
         """Returns True if has legal move else False
@@ -51,5 +58,5 @@ class Board():
         (x,y) = move
         assert self[x][y] == 0
         self[x][y] = color
-        self.legal_moves.remove(move)
+        #self.legal_moves.remove(move)
 
