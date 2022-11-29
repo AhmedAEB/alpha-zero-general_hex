@@ -25,7 +25,7 @@ class HexGame(Game):
 
 	def getActionSize(self):
 		# return number of actions 
-		return self.n * self.n # + 1 (for swap)
+		return self.n * self.n + 1 #(for swap)
 
 	def getNextState(self, board, player, action):
 		# if player takes action on board, return next (board,player)
