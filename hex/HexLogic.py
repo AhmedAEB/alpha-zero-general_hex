@@ -60,7 +60,11 @@ class Board():
         color gives the color pf the piece to play (1=white,-1=black)
         """
         (x,y) = move
-        assert self[x][y] == 0
+        try:
+            assert self[x][y] == 0
+        except AssertionError:
+            print(move, color, self.pieces)
+            raise AssertionError
         self[x][y] = color
         #self.legal_moves.remove(move)
 
