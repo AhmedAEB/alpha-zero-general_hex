@@ -1,6 +1,6 @@
 import logging
 
-from tqdm import tqdm
+# from tqdm import tqdm
 
 log = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ class Arena():
         oneWon = 0
         twoWon = 0
         draws = 0
-        for _ in tqdm(range(num), desc="Arena.playGames (1)"):
+        for _ in range(num):# tqdm(range(num), desc="Arena.playGames (1)"):
             gameResult = self.playGame(verbose=verbose)
             if gameResult == 1:
                 oneWon += 1
@@ -88,7 +88,7 @@ class Arena():
 
         self.player1, self.player2 = self.player2, self.player1
 
-        for _ in tqdm(range(num), desc="Arena.playGames (2)"):
+        for _ in range(num):# tqdm(range(num), desc="Arena.playGames (2)"):
             gameResult = self.playGame(verbose=verbose)
             if gameResult == -1:
                 oneWon += 1

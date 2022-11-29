@@ -6,7 +6,7 @@ from pickle import Pickler, Unpickler
 from random import shuffle
 
 import numpy as np
-from tqdm import tqdm
+#from tqdm import tqdm
 
 from Arena import Arena
 from MCTS import MCTS
@@ -84,7 +84,7 @@ class Coach():
             if not self.skipFirstSelfPlay or i > 1:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
-                for _ in tqdm(range(self.args.numEps), desc="Self Play"):
+                for _ in range(self.args.numEps):#(range(self.args.numEps), desc="Self Play"):
                     self.mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree
                     iterationTrainExamples += self.executeEpisode()
 
