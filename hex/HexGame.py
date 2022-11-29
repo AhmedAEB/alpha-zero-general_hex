@@ -25,7 +25,7 @@ class HexGame(Game):
 
     def getActionSize(self):
         # return number of actions 
-        return self.n * self.n #+ 1 #(for swap)
+        return self.n * self.n + 1 #(for swap)
 
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
@@ -45,9 +45,9 @@ class HexGame(Game):
         b = Board(self.n)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
-        # if len(legalMoves) == 0:
-        #     valids[-1] = 1
-        #     return np.array(valids)
+        if len(legalMoves) == 0:
+            valids[-1] = 1
+            return np.array(valids)
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
         return np.array(valids)
@@ -95,7 +95,7 @@ class HexGame(Game):
     # modified
     def getSymmetries(self, board, pi):
         # mirror, rotational
-        assert(len(pi) == self.n**2) #+ 1)  # 1 for pass
+        assert(len(pi) == self.n**2 + 1)  # 1 for pass
         pi_board = np.reshape(pi[:-1], (self.n, self.n))
         l = []
     
@@ -123,9 +123,9 @@ class HexGame(Game):
             for x in range(n):
                 piece = board[y][x]    # get the piece to print
                 if piece == -1:
-                    print("b ", end="")
+                    print("B ", end="")
                 elif piece == 1:
-                    print("W ", end="")
+                    print("R ", end="")
                 else:
                     if x == n:
                         print("-", end="")
