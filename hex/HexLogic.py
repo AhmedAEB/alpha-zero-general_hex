@@ -49,7 +49,11 @@ class Board():
         """Returns True if has legal move else False
         """
         # Get all empty locations.
-        return len(self.legal_moves) > 0
+        for y in range(self.n):
+            for x in range(self.n):
+                if self[x][y] == 0:
+                    return True
+        return False
 
     def execute_move(self, move, color):
         """Perform the given move on the board; flips pieces as necessary.
