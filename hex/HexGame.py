@@ -98,17 +98,12 @@ class HexGame(Game):
 		assert(len(pi) == self.n**2 + 1)  # 1 for pass
 		pi_board = np.reshape(pi[:-1], (self.n, self.n))
 		l = []
-
-		for i in range(1, 3):
-			for j in [True, False]:
-				newB = np.rot90(board, i)
-				newB = np.rot90(newB, i)
-				newPi = np.rot90(pi_board, i)
-				newPi = np.rot90(newPi, i)
-				if j:
-					newB = np.fliplr(newB)
-					newPi = np.fliplr(newPi)
-				l += [(newB, list(newPi.ravel()) + [pi[-1]])]
+	
+		l += [(board, pi)]
+		l += [(np.fliplr(board), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
+		l += [(np.flipud(board), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
+		l += [(np.flipud(np.fliplr(board)), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
+	
 		return l
 
 	def stringRepresentation(self, board):
