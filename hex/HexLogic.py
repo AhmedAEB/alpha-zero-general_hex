@@ -49,7 +49,6 @@ class Board():
 		color gives the color pf the piece to play (1=white,-1=black)
 		"""
 		(x,y) = move
-		print(self.pieces)
 		assert self[x][y] == 0
 		self[x][y] = color
 		self.legal_moves.remove(move)
