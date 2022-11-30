@@ -4,7 +4,7 @@ import logging
 
 from Coach import Coach
 from Game import Game
-from hex.keras.NNet import NNetWrapper as nn
+from NeuralNet import NeuralNet as nn
 
 log = logging.getLogger(__name__)
 

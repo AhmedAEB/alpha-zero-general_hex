@@ -2,7 +2,7 @@ import Arena
 from MCTS import MCTS
 from hex.HexGame import HexGame
 from hex.HexPlayers import *
-from hex.keras.NNet import NNetWrapper as NNet
+from NeuralNet import NeuralNet as NNet
 
 
 import numpy as np
