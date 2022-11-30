@@ -24,9 +24,7 @@ args = {
     'load_model': False,
     'load_folder_file': ('/dev/models/8x100x50','best.pth.tar'),
     'numItersForTrainExamplesHistory': 20,
-
 }
-
 
 def main():
     log.info('Loading %s...', Game.__name__)

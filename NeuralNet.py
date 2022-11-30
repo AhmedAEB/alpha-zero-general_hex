@@ -4,7 +4,7 @@ import sys
 sys.path.append('..')
 
 import argparse
-from hex.keras.HexNNet import HexNNet as onnet
+from NNModel import NNModel as onnet
 
 args = {
     'lr': 0.001,
