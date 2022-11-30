@@ -1,6 +1,6 @@
 import logging
 
-# import coloredlogs
+import coloredlogs
 
 from Coach import Coach
 from Game import Game
@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 # Set the logging level
 logging.basicConfig(level=logging.INFO)
 
-# coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
+coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 args = {
     'numIters': 1000,
