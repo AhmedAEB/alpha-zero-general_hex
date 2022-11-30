@@ -8,7 +8,6 @@ import math
 import sys
 import tensorflow as tf
 sys.path.append('..')
-from utils import *
 from NeuralNet import NeuralNet
 
 import argparse

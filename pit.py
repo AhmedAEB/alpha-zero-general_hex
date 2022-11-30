@@ -6,7 +6,6 @@ from hex.keras.NNet import NNetWrapper as NNet
 
 
 import numpy as np
-from utils import *
 
 """
 use this script to play any two agents against each other, or play manually with

@@ -5,7 +5,6 @@ import logging
 from Coach import Coach
 from hex.HexGame import HexGame as Game
 from hex.keras.NNet import NNetWrapper as nn
-from utils import *
 
 log = logging.getLogger(__name__)
 
