@@ -60,7 +60,7 @@ class HexGame(Game):
         if visited[x][y]:
             return False
         visited[x][y] = True
-        if x == self.n - 1:
+        if (player == 1 and x == self.n - 1) or (player == -1 and y == self.n - 1):
             return True
         return any(self.DFS(board, player, x + I_DISPLACEMENTS[i], y + J_DISPLACEMENTS[i], visited) for i in range(6))
 
