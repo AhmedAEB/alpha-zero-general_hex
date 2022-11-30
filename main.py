@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 # coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
-args = dotdict({
+args = {
     'numIters': 1000,
     'numEps': 100,              # Number of complete self-play games to simulate during a new iteration.
     'tempThreshold': 15,        #
@@ -26,7 +26,7 @@ args = dotdict({
     'load_folder_file': ('/dev/models/8x100x50','best.pth.tar'),
     'numItersForTrainExamplesHistory': 20,
 
-})
+}
 
 
 def main():
@@ -36,16 +36,16 @@ def main():
     log.info('Loading %s...', nn.__name__)
     nnet = nn(g)
 
-    if args.load_model:
-        log.info('Loading checkpoint "%s/%s"...', args.load_folder_file[0], args.load_folder_file[1])
-        nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+    if args["load_model"]:
+        log.info('Loading checkpoint "%s/%s"...', args["load_folder_file"][0], args["load_folder_file"][1])
+        nnet.load_checkpoint(args["load_folder_file"][0], args["load_folder_file"][1])
     else:
         log.warning('Not loading a checkpoint!')
 
     log.info('Loading the Coach...')
     c = Coach(g, nnet, args)
 
-    if args.load_model:
+    if args["load_model"]:
         log.info("Loading 'trainExamples' from file...")
         c.loadTrainExamples()
 
