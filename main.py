@@ -3,7 +3,7 @@ import logging
 # import coloredlogs
 
 from Coach import Coach
-from hex.HexGame import HexGame as Game
+from Game import Game
 from hex.keras.NNet import NNetWrapper as nn
 from utils import *
 
