@@ -72,16 +72,15 @@ class HexGame(Game):
         b.pieces = np.copy(board)
         # n = self.n_in_row
 
-        if player == 1:
-            # Check if player 1 has a winning path from top to bottom
-            for i in range(self.n):
-                if self.DFS(board, player, 0, i, [[False] * self.n for _ in range(self.n)]):
-                    return 1
-        else:
-            # Check if player 2 has a winning path from left to right
-            for i in range(self.n):
-                if self.DFS(board, player, i, 0, [[False] * self.n for _ in range(self.n)]):
-                    return -1
+        # Check if player 1 has a winning path from top to bottom
+        for i in range(self.n):
+            if self.DFS(board, 1, 0, i, [[False] * self.n for _ in range(self.n)]):
+                return 1
+                
+        # Check if player 2 has a winning path from left to right
+        for i in range(self.n):
+            if self.DFS(board, -1, i, 0, [[False] * self.n for _ in range(self.n)]):
+                return -1
 
         if b.has_legal_moves():
             return 0
