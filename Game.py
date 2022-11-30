@@ -1,13 +1,12 @@
 from __future__ import print_function
 import sys
 sys.path.append('..')
-from hex.HexLogic import Board
+from Board import Board
 import numpy as np
 
 I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
-#TODO
 class Game():
     def __init__(self, n=15):# , nir=5):
         self.n = n
