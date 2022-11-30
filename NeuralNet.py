@@ -2,10 +2,9 @@ import os
 import numpy as np
 import sys
 sys.path.append('..')
-from NeuralNet import NeuralNet
 
 import argparse
-from hex.HexNNet import HexNNet as onnet
+from hex.keras.HexNNet import HexNNet as onnet
 
 args = {
     'lr': 0.001,
@@ -15,8 +14,6 @@ args = {
     'cuda': True,
     'num_channels': 512,
 }
-
-
 
 class NeuralNet():
     def __init__(self, game):
