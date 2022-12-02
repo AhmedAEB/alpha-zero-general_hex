@@ -9,6 +9,7 @@ import numpy as np
 from tqdm import tqdm
 
 from Arena import Arena
+from Game import Game
 from MCTS import MCTS
 
 log = logging.getLogger(__name__)
@@ -25,7 +26,7 @@ class Coach():
         self.nnet = nnet
         self.pnet = self.nnet.__class__(self.game)  # the competitor network
         self.args = args
-        self.mcts = MCTS(self.game, self.nnet, self.args)
+        self.mcts = MCTS(Game(self.game.n), self.nnet, self.args)
         self.trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
         self.skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
 
