@@ -8,8 +8,9 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15, is_mcts=False):# , nir=5):
+    def __init__(self, n=15, is_mcts=False  ):# , nir=5):
         self.n = n
+        self.turns = 0
         # self.n_in_row = nir
 
     def getInitBoard(self):
@@ -43,7 +44,7 @@ class Game():
         b = Board(self.n)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
-        if len(legalMoves) == 0:
+        if len(legalMoves) == 0 or self.turns == 1:
             valids[-1] = 1
             return np.array(valids)
         for x, y in legalMoves:
