@@ -29,9 +29,10 @@ class HumanPlayer():
 
 g = Game(11)
 hp = HumanPlayer(g).play
+nn = NNet(g)
 
 args1 = {'numMCTSSims': 50, 'cpuct':1.0}
-mcts1 = MCTS(g, n1, args1)
+mcts1 = MCTS(g, nn, args1)
 nnp = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 
 arena = Arena.Arena(nnp, hp, g, display=Game.display)
