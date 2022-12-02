@@ -12,7 +12,6 @@ class HumanPlayer():
     def play(self, board):
         # display(board)
         valid = self.game.getValidMoves(board, 1)
-        print(valid)
         for i in range(len(valid)):
             if valid[i]:
                 if i == self.game.n * self.game.n:
