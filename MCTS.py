@@ -3,6 +3,8 @@ import math
 
 import numpy as np
 
+from Game import Game
+
 EPS = 1e-8
 
 log = logging.getLogger(__name__)
@@ -14,7 +16,7 @@ class MCTS():
     """
 
     def __init__(self, game, nnet, args):
-        self.game = game
+        self.game = Game(game.n, turn_count=game.turn_count)
         self.nnet = nnet
         self.args = args
         self.Qsa = {}  # stores Q values for s,a (as defined in the paper)

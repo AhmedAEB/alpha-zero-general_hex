@@ -56,6 +56,8 @@ class Arena():
                 log.debug(f'valids = {valids}')
                 assert valids[action] > 0
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
+            if action == self.game.n * self.game.n: # Swap players on swap move
+                players[0], players[2] = players[2], players[0]
         if verbose:
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))

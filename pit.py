@@ -12,9 +12,13 @@ class HumanPlayer():
     def play(self, board):
         # display(board)
         valid = self.game.getValidMoves(board, 1)
+        print(valid)
         for i in range(len(valid)):
             if valid[i]:
-                print(int(i/self.game.n), int(i%self.game.n))
+                if i == self.game.n * self.game.n:
+                    print("-1 -1 (swap)")
+                else:
+                    print(int(i/self.game.n), int(i%self.game.n))
         while True:
             a = input()
 

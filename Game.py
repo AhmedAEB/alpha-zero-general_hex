@@ -8,9 +8,9 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15):# , nir=5):
+    def __init__(self, n=15, turn_count=0):# , nir=5):
         self.n = n
-        self.turns = 0
+        self.turn_count = 0
         # self.n_in_row = nir
 
     def getInitBoard(self):
@@ -29,13 +29,13 @@ class Game():
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
+        self.turn_count += 1
         if action == self.n * self.n:
-            return (board, -player)
+            return (board, player)
         b = Board(self.n)
         b.pieces = np.copy(board)
         move = (int(action / self.n), action % self.n)
         b.execute_move(move, player)
-        self.turns += 1
         return (b.pieces, -player)
 
     # modified
@@ -46,9 +46,8 @@ class Game():
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
         # Check if swap is a valid move (only one turn played)
-        if self.turns == 1:
+        if self.turn_count == 1:
             valids[-1] = 1
-            return np.array(valids)
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
         return np.array(valids)
