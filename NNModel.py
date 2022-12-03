@@ -5,7 +5,6 @@ import argparse
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 from tensorflow.keras.optimizers import *
-from tensorflow.distribute import MirroredStrategy
 
 class NNModel():
     def __init__(self, game, args):
@@ -29,5 +28,5 @@ class NNModel():
         self.v = Dense(1, activation='tanh', name='v')(s_fc2)                    # batch_size x 1
         
         with MirroredStrategy().scope():
-            self.model = Model(inputs=self.input_boards, outputs=[self.pi, self.v])
-            self.model.compile(loss=['categorical_crossentropy','mean_squared_error'], optimizer=Adam(args["lr"]))
+        self.model = Model(inputs=self.input_boards, outputs=[self.pi, self.v])
+        self.model.compile(loss=['categorical_crossentropy','mean_squared_error'], optimizer=Adam(args["lr"]))
