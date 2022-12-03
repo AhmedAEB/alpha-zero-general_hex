@@ -37,7 +37,6 @@ class MCTS():
                    proportional to Nsa[(s,a)]**(1./temp)
         """
         for i in range(self.args["numMCTSSims"]):
-            #print(self.game.turn_count)
             self.search(canonicalBoard, Game(self.game.n, self.game.turn_count))
 
         s = self.game.stringRepresentation(canonicalBoard)
@@ -75,7 +74,6 @@ class MCTS():
             v: the negative of the value of the current canonicalBoard
         """
 
-        print(g.turn_count)
 
         s = g.stringRepresentation(canonicalBoard)
 
