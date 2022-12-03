@@ -27,6 +27,5 @@ class NNModel():
         self.pi = Dense(self.action_size, activation='softmax', name='pi')(s_fc2)   # batch_size x self.action_size
         self.v = Dense(1, activation='tanh', name='v')(s_fc2)                    # batch_size x 1
         
-        with MirroredStrategy().scope():
         self.model = Model(inputs=self.input_boards, outputs=[self.pi, self.v])
         self.model.compile(loss=['categorical_crossentropy','mean_squared_error'], optimizer=Adam(args["lr"]))
