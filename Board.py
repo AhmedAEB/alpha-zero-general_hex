@@ -1,9 +1,9 @@
 class Board():
-    def __init__(self, n):
+    def __init__(self, n, turn=0):
         "Set up initial board configuration."
         self.n = n
         # self.legal_moves = set()
-        self.can_swap = True
+        self.turn = turn
 
         # Create the empty board array.
         self.pieces = [None] * self.n

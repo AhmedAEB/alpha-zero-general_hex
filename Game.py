@@ -31,6 +31,7 @@ class Game():
         if action == self.n * self.n:
             return (board, player)
         b = Board(self.n)
+        b.turn += 1
         b.pieces = np.copy(board)
         move = (int(action / self.n), action % self.n)
         b.execute_move(move, player)
@@ -40,11 +41,11 @@ class Game():
     def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
-        b = Board(self.n)
+        b = Board(self.n, turn=board.turn)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
         # Check if swap is a valid move (only one turn played)
-        if turn == 1:
+        if board.turn == 1:
             valids[-1] = 1
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
