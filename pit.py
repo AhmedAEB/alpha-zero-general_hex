@@ -1,54 +1,43 @@
 import Arena
 from MCTS import MCTS
-from hex.HexGame import HexGame
-from hex.HexPlayers import *
-from hex.keras.NNet import NNetWrapper as NNet
-
+from Game import Game
+from NeuralNet import NeuralNet as NNet
 
 import numpy as np
-from utils import *
 
-"""
-use this script to play any two agents against each other, or play manually with
-any agent.
-"""
+class HumanPlayer():
+    def __init__(self, game):
+        self.game = game
 
-mini_hex = False  # Play in 6x6 instead of the normal 8x8.
-human_vs_cpu = True
+    def play(self, board):
+        # display(board)
+        valid = self.game.getValidMoves(board, 1)
+        for i in range(len(valid)):
+            if valid[i]:
+                if i == self.game.n * self.game.n:
+                    print("-1 -1 (swap)")
+                else:
+                    print(int(i/self.game.n), int(i%self.game.n))
+        while True:
+            a = input()
 
-if mini_hex:
-    g = HexGame(6)
-else:
-    g = HexGame(11)
+            x,y = [int(x) for x in a.split(' ')]
+            a = self.game.n * x + y if x!= -1 else self.game.n ** 2
+            if valid[a]:
+                break
+            else:
+                print('Invalid')
 
-# all players
-#rp = RandomPlayer(g).play
-#gp = GreedyOthelloPlayer(g).play
-hp = HumanHexPlayer(g).play
+        return a
 
+g = Game(11)
+hp = HumanPlayer(g).play
+nn = NNet(g)
 
+args1 = {'numMCTSSims': 50, 'cpuct':1.0}
+mcts1 = MCTS(g, nn, args1)
+nnp = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 
-# nnet players
-n1 = NNet(g)
-#if mini_hex:
-    #n1.load_checkpoint('./pretrained_models/othello/pytorch/','6x100x25_best.pth.tar')
-#else:
-    #n1.load_checkpoint('./pretrained_models/othello/pytorch/','8x8_100checkpoints_best.pth.tar')
-args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-mcts1 = MCTS(g, n1, args1)
-n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
-
-if human_vs_cpu:
-    player2 = hp
-else:
-    n2 = NNet(g)
-    n2.load_checkpoint('./pretrained_models/othello/pytorch/', '8x8_100checkpoints_best.pth.tar')
-    args2 = dotdict({'numMCTSSims': 50, 'cpuct': 1.0})
-    mcts2 = MCTS(g, n2, args2)
-    n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
-
-    player2 = n2p  # Player 2 is neural network if it's cpu vs cpu.
-
-arena = Arena.Arena(n1p, player2, g, display=HexGame.display)
+arena = Arena.Arena(nnp, hp, g, display=Game.display)
 
 print(arena.playGames(2, verbose=True))

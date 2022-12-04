@@ -8,7 +8,7 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15, is_mcts=False  ):# , nir=5):
+    def __init__(self, n=15, turn_count=0):# , nir=5):
         self.n = n
         self.turns = 0
         # self.n_in_row = nir
@@ -30,8 +30,9 @@ class Game():
         # if player takes action on board, return next (board,player)
         # action must be a valid move
         if action == self.n * self.n:
-            return (board, -player)
+            return (board, player)
         b = Board(self.n)
+        b.turn += 1
         b.pieces = np.copy(board)
         move = (int(action / self.n), action % self.n)
         b.execute_move(move, player)
@@ -41,12 +42,12 @@ class Game():
     def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
-        b = Board(self.n)
+        b = Board(self.n, turn=board.turn)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
-        if len(legalMoves) == 0 or self.turns == 1:
+        # Check if swap is a valid move (only one turn played)
+        if board.turn == 1:
             valids[-1] = 1
-            return np.array(valids)
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
         return np.array(valids)
@@ -131,49 +132,3 @@ class Game():
                         print("- ", end="")
             print("|")
         print("   -----------------------")
-
-if __name__=="__main__":
-    g = Game(11)
-    n = 11
-    x = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0],
-                  [0, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0],
-                  [-1, -1, 0, 0, -1, 0, 0, 0, -1, 0, 1],
-                  [0, -1, 0, -1, 0, 0, 0, 0, -1, -1, 1],
-                  [0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-
-    b = Board(11)
-    b = np.array(b.pieces)
-
-    pi = [0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.041666666666666664, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.0, 0.041666666666666664, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.041666666666666664, 0.0, 0.0, 0.0]
-    pi_board = np.reshape(pi[:-1], (11, 11))
-
-    l = []
-
-    l = [(b, pi)]
-
-    l_90 = [(np.fliplr(b), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
-
-    l_180 = [(np.fliplr(np.fliplr(b)), list(np.fliplr(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
-
-    l_270 = [(np.fliplr(np.fliplr(np.fliplr(b))), list(np.fliplr(np.fliplr(np.fliplr(pi_board))).ravel()) + [pi[-1]])]
-
-    l_360 = [(np.fliplr(np.fliplr(np.fliplr(np.fliplr(b)))), list(np.fliplr(np.fliplr(np.fliplr(np.fliplr(pi_board)))).ravel()) + [pi[-1]])]
-
-
-
-    print(l_180)
-    # l += [(np.flipud(b), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
-    # l += [(np.flipud(np.fliplr(b)), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
-
-
-
-    # Outputs 0
-
-
-
