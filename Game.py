@@ -38,6 +38,7 @@ class Game():
         b.pieces[self.n][self.n-1] += 1 # increment turn count
         move = (int(action / self.n), action % self.n)
         b.execute_move(move, player)
+        b.pieces[self.n][0] *= -1
         return (b.pieces, -player)
 
     # modified
@@ -90,7 +91,9 @@ class Game():
 
     def getCanonicalForm(self, board, player):
         # return state if player==1, else return -state if player==-1
-        return board.copy() # Rules for hex are different (inverting results in false wins)
+        b = board.copy()
+        #b[self.n][0] *= -1
+        return b # Rules for hex are different (inverting results in false wins)
 
     # modified
     def getSymmetries(self, board, pi):

@@ -10,6 +10,8 @@ class Board():
         for i in range(self.n + 1):
             self.pieces[i] = [0] * self.n
 
+        self.pieces[self.n][0] = 1
+
         # Initialize the legal moves.
         # for y in range(self.n):
         #     for x in range(self.n):
@@ -52,5 +54,5 @@ class Board():
         except AssertionError:
             print(move, color, self.pieces)
             raise AssertionError
-        self[x][y] = color
+        self[x][y] = self[self.n][0]
         # self.legal_moves.remove(move)
