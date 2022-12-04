@@ -72,8 +72,6 @@ class MCTS():
             v: the negative of the value of the current canonicalBoard
         """
 
-        print("MCTURN", canonicalBoard.turn)
-
         s = self.game.stringRepresentation(canonicalBoard)
 
         if s not in self.Es:
@@ -84,7 +82,7 @@ class MCTS():
 
         if s not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(np.array(canonicalBoard.pieces))
+            self.Ps[s], v = self.nnet.predict(canonicalBoard)
             valids = self.game.getValidMoves(canonicalBoard, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])
@@ -122,9 +120,7 @@ class MCTS():
 
         a = best_act
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
-        # next_s = self.game.getCanonicalForm(next_s, next_player)
-
-        print("Action:", a)
+        next_s = self.game.getCanonicalForm(next_s, next_player)
 
         v = self.search(next_s)
 

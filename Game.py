@@ -8,18 +8,18 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15, turn_count=0):# , nir=5):
+    def __init__(self, n=15):# , nir=5):
         self.n = n
         # self.n_in_row = nir
 
     def getInitBoard(self):
         # return initial board (numpy board)
         b = Board(self.n)
-        return b
+        return np.array(b.pieces)
 
     def getBoardSize(self):
         # (a,b) tuple
-        return (self.n, self.n)
+        return (self.n + 1, self.n)
 
     def getActionSize(self):
         # return number of actions 
@@ -28,25 +28,26 @@ class Game():
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
-        b = Board(self.n, turn=board.turn+1)
-        b.pieces = np.copy(board.pieces)
-        
-        if action != self.n * self.n:
-            move = (int(action / self.n), action % self.n)
-            b.execute_move(move, player)
-            return (b, -player)
-        else:
-            return (b, player)
+        if action == self.n * self.n:
+            b = Board(self.n)
+            b.pieces = np.copy(board)
+            b.pieces[self.n][self.n-1] += 1
+            return (b.pieces, player) # Swap Move
+        b = Board(self.n)
+        b.pieces = np.copy(board)
+        b.pieces[self.n][self.n-1] += 1 # increment turn count
+        move = (int(action / self.n), action % self.n)
+        b.execute_move(move, player)
+        return (b.pieces, -player)
 
     # modified
     def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
-        b = Board(self.n, turn=board.turn)
-        b.pieces = np.copy(board.pieces)
+        b = Board(self.n)
+        b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
-        # Check if swap is a valid move (only one turn played)
-        if board.turn == 1:
+        if board[self.n][self.n-1] == 1:
             valids[-1] = 1
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
@@ -69,7 +70,7 @@ class Game():
         # return 0 if not ended, 1 if player 1 won, -1 if player 1 lost
         # player = 1
         b = Board(self.n)
-        b.pieces = np.copy(board.pieces)
+        b.pieces = np.copy(board)
         # n = self.n_in_row
 
         # Check if player 1 has a winning path from top to bottom
@@ -107,12 +108,11 @@ class Game():
 
     def stringRepresentation(self, board):
         # 8x8 numpy array (canonical board)
-        return np.array(board.pieces).tostring()
+        return board.tostring()
 
     @staticmethod
     def display(board):
-        board = np.array(board.pieces)
-        n = board.shape[0]
+        n = board.shape[0]-1
 
         for y in range(n):
             print(y, "|", end="")
@@ -133,3 +133,4 @@ class Game():
                         print("- ", end="")
             print("|")
         print("   -----------------------")
+        print("TURN: ", board[n][n-1])
