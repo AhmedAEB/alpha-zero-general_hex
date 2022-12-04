@@ -11,6 +11,7 @@ class HumanPlayer():
 
     def play(self, board):
         # display(board)
+        print("Turn:", board.turn)
         valid = self.game.getValidMoves(board, 1)
         for i in range(len(valid)):
             if valid[i]:

@@ -15,7 +15,7 @@ class Game():
     def getInitBoard(self):
         # return initial board (numpy board)
         b = Board(self.n)
-        return np.array(b.pieces)
+        return b
 
     def getBoardSize(self):
         # (a,b) tuple
@@ -28,21 +28,22 @@ class Game():
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
-        if action == self.n * self.n:
-            return (board, player)
-        b = Board(self.n)
-        b.turn += 1
-        b.pieces = np.copy(board)
-        move = (int(action / self.n), action % self.n)
-        b.execute_move(move, player)
-        return (b.pieces, -player)
+        b = Board(self.n, turn=board.turn+1)
+        b.pieces = np.copy(board.pieces)
+        
+        if action != self.n * self.n:
+            move = (int(action / self.n), action % self.n)
+            b.execute_move(move, player)
+            return (b, -player)
+        else:
+            return (b, player)
 
     # modified
     def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
         b = Board(self.n, turn=board.turn)
-        b.pieces = np.copy(board)
+        b.pieces = np.copy(board.pieces)
         legalMoves = b.get_legal_moves(player)
         # Check if swap is a valid move (only one turn played)
         if board.turn == 1:
@@ -68,7 +69,7 @@ class Game():
         # return 0 if not ended, 1 if player 1 won, -1 if player 1 lost
         # player = 1
         b = Board(self.n)
-        b.pieces = np.copy(board)
+        b.pieces = np.copy(board.pieces)
         # n = self.n_in_row
 
         # Check if player 1 has a winning path from top to bottom
@@ -106,10 +107,11 @@ class Game():
 
     def stringRepresentation(self, board):
         # 8x8 numpy array (canonical board)
-        return board.tostring()
+        return np.array(board.pieces).tostring()
 
     @staticmethod
     def display(board):
+        board = np.array(board.pieces)
         n = board.shape[0]
 
         for y in range(n):
