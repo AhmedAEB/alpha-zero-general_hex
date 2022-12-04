@@ -31,7 +31,7 @@ class Game():
         if action == self.n * self.n:
             b = Board(self.n)
             b.pieces = np.copy(board)
-            b.pieces[self.n][self.n-1] += 1
+            b.pieces[self.n][self.n-1] = 1
             return (b.pieces, player) # Swap Move
         b = Board(self.n)
         b.pieces = np.copy(board)
