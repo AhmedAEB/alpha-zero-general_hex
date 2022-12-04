@@ -35,7 +35,8 @@ class Game():
             return (b.pieces, player) # Swap Move
         b = Board(self.n)
         b.pieces = np.copy(board)
-        b.pieces[self.n][self.n-1] += 1 # increment turn count
+        if b.getNPlaced() > 1:
+            b.pieces[self.n][self.n-1] = 1 # Disable swap
         move = (int(action / self.n), action % self.n)
         b.execute_move(move, player)
         b.pieces[self.n][0] *= -1
@@ -48,7 +49,7 @@ class Game():
         b = Board(self.n)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
-        if board[self.n][self.n-1] == 1:
+        if b.getNPlaced() == 1 and board[self.n][self.n-1] == 0:
             valids[-1] = 1
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
@@ -101,12 +102,16 @@ class Game():
         assert(len(pi) == self.n**2 + 1)  # 1 for pass
         pi_board = np.reshape(pi[:-1], (self.n, self.n))
         l = []
-    
-        l += [(board, pi)]
-        l += [(np.fliplr(board), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
-        l += [(np.flipud(board), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
-        l += [(np.flipud(np.fliplr(board)), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
-    
+        print(board)
+        last_row = board[self.n]
+        print(last_row, "L")
+        board = np.delete(board, self.n, 0)
+        
+        l += [(np.append(board, last_row).reshape(self.n+1, self.n), pi)]
+        l += [(np.append(np.fliplr(board), last_row).reshape(self.n+1, self.n), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
+        l += [(np.append(np.flipud(board), last_row).reshape(self.n+1, self.n), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
+        l += [(np.append(np.flipud(np.fliplr(board)), last_row).reshape(self.n+1, self.n), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
+        print(l)
         return l
 
     def stringRepresentation(self, board):

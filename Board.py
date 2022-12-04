@@ -21,6 +21,15 @@ class Board():
     def __getitem__(self, index):
         return self.pieces[index]
 
+    def getNPlaced(self):
+        count = 0
+        # Get all empty locations.
+        for y in range(self.n):
+            for x in range(self.n):
+                if self[x][y] != 0:
+                    count += 1
+        return count
+
     def get_legal_moves(self, color):
         """Returns all the legal moves for the given color.
         (1 for white, -1 for black
