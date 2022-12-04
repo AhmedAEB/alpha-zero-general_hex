@@ -8,7 +8,7 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15, turn_count=0):# , nir=5):
+    def __init__(self, n=15, turn=0):# , nir=5):
         self.n = n
         self.turns = 0
         # self.n_in_row = nir
