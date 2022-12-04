@@ -7,7 +7,7 @@ import argparse
 from NNModel import NNModel as onnet
 
 args = {
-    'lr': 0.001,
+    'lr': 0.01,
     'dropout': 0.3,
     'epochs': 10,
     'batch_size': 64,
