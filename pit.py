@@ -9,9 +9,9 @@ class HumanPlayer():
     def __init__(self, game):
         self.game = game
 
-    def play(self, board):
+    def play(self, board, turn):
         # display(board)
-        valid = self.game.getValidMoves(board, 1)
+        valid = self.game.getValidMoves(board, 1, turn)
         for i in range(len(valid)):
             if valid[i]:
                 if i == self.game.n * self.game.n:
@@ -36,7 +36,7 @@ nn = NNet(g)
 
 args1 = {'numMCTSSims': 50, 'cpuct':1.0}
 mcts1 = MCTS(g, nn, args1)
-nnp = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
+nnp = lambda x, turn: np.argmax(mcts1.getActionProb(x, turn, temp=0))
 
 arena = Arena.Arena(nnp, hp, g, display=Game.display)
 
