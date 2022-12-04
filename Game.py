@@ -42,6 +42,7 @@ class Game():
     def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
+        print("Board type", type(board))
         b = Board(self.n, turn=board.turn)
         b.pieces = np.copy(board)
         legalMoves = b.get_legal_moves(player)
