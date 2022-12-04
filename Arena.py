@@ -49,7 +49,6 @@ class Arena():
                 print("Turn ", str(it), "Player ", str(curPlayer))
                 self.display(board)
             action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer), self.turn)
-            self.turn += 1
 
             valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1, self.turn)
 
@@ -60,6 +59,9 @@ class Arena():
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
             if action == self.game.n * self.game.n: # Swap players on swap move
                 players[0], players[2] = players[2], players[0]
+                
+            self.turn += 1
+            
         if verbose:
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
