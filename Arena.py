@@ -26,7 +26,6 @@ class Arena():
         self.player2 = player2
         self.game = game
         self.display = display
-        self.turn = 0
 
     def playGame(self, verbose=False):
         """
@@ -48,9 +47,9 @@ class Arena():
                 assert self.display
                 print("Turn ", str(it), "Player ", str(curPlayer))
                 self.display(board)
-            action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer), self.turn)
+            action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
 
-            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1, self.turn)
+            valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
 
             if valids[action] == 0:
                 log.error(f'Action {action} is not valid!')
@@ -60,7 +59,6 @@ class Arena():
             if action == self.game.n * self.game.n: # Swap players on swap move
                 players[0], players[2] = players[2], players[0]
                 
-            self.turn += 1
             
         if verbose:
             assert self.display

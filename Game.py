@@ -10,7 +10,6 @@ J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 class Game():
     def __init__(self, n=15, turn_count=0):# , nir=5):
         self.n = n
-        self.turn_count = 0
         # self.n_in_row = nir
 
     def getInitBoard(self):
@@ -38,7 +37,7 @@ class Game():
         return (b.pieces, -player)
 
     # modified
-    def getValidMoves(self, board, player, turn):
+    def getValidMoves(self, board, player):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
         b = Board(self.n)
