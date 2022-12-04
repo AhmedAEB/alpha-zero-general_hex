@@ -102,16 +102,16 @@ class Game():
         assert(len(pi) == self.n**2 + 1)  # 1 for pass
         pi_board = np.reshape(pi[:-1], (self.n, self.n))
         l = []
-        print(board)
+        #print(board)
         last_row = board[self.n]
-        print(last_row, "L")
+        #print(last_row, "L")
         board = np.delete(board, self.n, 0)
         
         l += [(np.append(board, last_row).reshape(self.n+1, self.n), pi)]
         l += [(np.append(np.fliplr(board), last_row).reshape(self.n+1, self.n), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
         l += [(np.append(np.flipud(board), last_row).reshape(self.n+1, self.n), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
         l += [(np.append(np.flipud(np.fliplr(board)), last_row).reshape(self.n+1, self.n), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
-        print(l)
+        #print(l)
         return l
 
     def stringRepresentation(self, board):
