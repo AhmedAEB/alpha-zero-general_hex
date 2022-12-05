@@ -76,7 +76,7 @@ class Board():
                     return True
         return False
 
-    def execute_move(self, move, color):
+    def execute_move(self, move, nextPiece):
         """Perform the given move on the board; flips pieces as necessary.
         color gives the color pf the piece to play (1=white,-1=black)
         """
@@ -86,5 +86,5 @@ class Board():
         except AssertionError:
             print(move, color, self.pieces)
             raise AssertionError
-        self[x][y] = self[self.n][0]
+        self[x][y] = nextPiece
         # self.legal_moves.remove(move)
