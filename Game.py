@@ -35,7 +35,7 @@ class Game():
             b.pieces[-1] = 1
         else:
             move = (int(action / self.n), action % self.n)
-            b.execute_move(move, board.getNextPlayer())
+            b.execute_move(move, b.getNextPlayer())
         
         return (b.pieces, -player)
 
