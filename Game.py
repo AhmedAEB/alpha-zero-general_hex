@@ -8,9 +8,8 @@ I_DISPLACEMENTS = [-1, -1, 0, 1, 1, 0]
 J_DISPLACEMENTS = [0, 1, 1, 0, -1, -1]
 
 class Game():
-    def __init__(self, n=15):# , nir=5):
+    def __init__(self, n=15):
         self.n = n
-        # self.n_in_row = nir
 
     def getInitBoard(self):
         # return initial board (numpy board)
@@ -19,7 +18,7 @@ class Game():
 
     def getBoardSize(self):
         # (a,b) tuple
-        return (self.n + 1, self.n)
+        return (self.n, self.n)
 
     def getActionSize(self):
         # return number of actions 
@@ -28,28 +27,26 @@ class Game():
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
-        if action == self.n * self.n:
-            b = Board(self.n)
-            b.pieces = np.copy(board)
-            b.pieces[self.n][self.n-1] = 1
-            return (b.pieces, player) # Swap Move
         b = Board(self.n)
         b.pieces = np.copy(board)
-        if b.getNPlaced() > 1:
-            b.pieces[self.n][self.n-1] = 1 # Disable swap
-        move = (int(action / self.n), action % self.n)
-        b.execute_move(move, player)
-        b.pieces[self.n][0] *= -1
+        
+        if action == self.n * self.n:
+            b.pieces *= -1
+            b.pieces[-1] = 1
+        else:
+            move = (int(action / self.n), action % self.n)
+            b.execute_move(move, board.getNextPlayer())
+        
         return (b.pieces, -player)
 
     # modified
-    def getValidMoves(self, board, player):
+    def getValidMoves(self, board, _):
         # return a fixed size binary vector
         valids = [0] * self.getActionSize()
         b = Board(self.n)
         b.pieces = np.copy(board)
-        legalMoves = b.get_legal_moves(player)
-        if b.getNPlaced() == 1 and board[self.n][self.n-1] == 0:
+        legalMoves = b.get_legal_moves(1)
+        if not b[-1][-1] and b.getNPlaced() == 1:
             valids[-1] = 1
         for x, y in legalMoves:
             valids[self.n * x + y] = 1
@@ -71,23 +68,28 @@ class Game():
     def getGameEnded(self, board, player):
         # return 0 if not ended, 1 if player 1 won, -1 if player 1 lost
         # player = 1
-        b = Board(self.n)
-        b.pieces = np.copy(board)
+        swap = board[-1][-1]
+        
+        board = np.copy(board)
+        
+        if swap:
+            board *= -1
+            player *= -1
+        
+        board = np.delete(board, self.n, 0)
         # n = self.n_in_row
 
         # Check if player 1 has a winning path from top to bottom
         for i in range(self.n):
-            if self.DFS(board, 1, 0, i, [[False] * self.n for _ in range(self.n)]):
-                return 1
+            if self.DFS(board, 1, 0, i, [[False] * self.n for _ in range(self.n)], red, blue):
+                return player
                 
         # Check if player 2 has a winning path from left to right
         for i in range(self.n):
-            if self.DFS(board, -1, i, 0, [[False] * self.n for _ in range(self.n)]):
-                return -1
+            if self.DFS(board, -1, i, 0, [[False] * self.n for _ in range(self.n)], red, blue):
+                return player * -1
 
-        if b.has_legal_moves():
-            return 0
-        return 1e-4
+        return 0
     
 
     def getCanonicalForm(self, board, player):
@@ -103,14 +105,19 @@ class Game():
         pi_board = np.reshape(pi[:-1], (self.n, self.n))
         l = []
         #print(board)
-        last_row = board[self.n]
+        #last_row = board[self.n]
+        swap = board[-1][-1]
+        
+        if swap:
+            board *= -1
+            
         #print(last_row, "L")
         board = np.delete(board, self.n, 0)
         
-        l += [(np.append(board, last_row).reshape(self.n+1, self.n), pi)]
-        l += [(np.append(np.fliplr(board), last_row).reshape(self.n+1, self.n), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
-        l += [(np.append(np.flipud(board), last_row).reshape(self.n+1, self.n), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
-        l += [(np.append(np.flipud(np.fliplr(board)), last_row).reshape(self.n+1, self.n), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
+        l += [(board, pi)]
+        l += [(np.fliplr(board), list(np.fliplr(pi_board).ravel()) + [pi[-1]])]
+        l += [(np.flipud(board), list(np.flipud(pi_board).ravel()) + [pi[-1]])]
+        l += [(np.flipud(np.fliplr(board)), list(np.flipud(np.fliplr(pi_board)).ravel()) + [pi[-1]])]
         #print(l)
         return l
 
@@ -127,7 +134,7 @@ class Game():
         print("")
         print(" -----------------------")
         for y in range(n):
-            print(y, "|", end="")    # print the row #
+            print(" "*y, y, "|", end="")    # print the row #
             for x in range(n):
                 piece = board[y][x]    # get the piece to print
                 if piece == -1:

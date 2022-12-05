@@ -10,17 +10,23 @@ class Board():
         for i in range(self.n + 1):
             self.pieces[i] = [0] * self.n
 
-        self.pieces[self.n][0] = 1
-
-        # Initialize the legal moves.
-        # for y in range(self.n):
-        #     for x in range(self.n):
-        #         self.legal_moves.add((x,y))
-
     # add [][] indexer syntax to the Board
     def __getitem__(self, index):
         return self.pieces[index]
 
+    def getNPlacedC(self, colour):
+        swap = self[-1][-1]
+        
+        if swap: colour *= -1
+        
+        count = 0
+        # Get all empty locations.
+        for y in range(self.n):
+            for x in range(self.n):
+                if self[x][y] == colour:
+                    count += 1
+        return count
+    
     def getNPlaced(self):
         count = 0
         # Get all empty locations.
@@ -29,8 +35,25 @@ class Board():
                 if self[x][y] != 0:
                     count += 1
         return count
+    
+    def getNextPlayer(self):
+        swap = self[-1][-1]
+        
+        redPieces = self.getNPlacedC(1)
+        bluePieces = self.getNPlacedC(-1)
+        
+        if swap == 0:
+            if redPieces > bluePieces:
+                return -1
+            else:
+                return 1
+        else:
+            if redPieces > bluePieces:
+                return 1
+            else:
+                return -1
 
-    def get_legal_moves(self, color):
+    def get_legal_moves(self, _):
         """Returns all the legal moves for the given color.
         (1 for white, -1 for black
         """

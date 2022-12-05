@@ -37,6 +37,12 @@ class NeuralNet():
         """
         # timing
         # start = time.time()
+        swap = board[-1][-1]
+        
+        if swap:
+            board *= -1
+        
+        board = np.delete(board, self.board_x, 0) # Delete last row before predicting from NN
 
         # preparing input
         board = board[np.newaxis, :, :]
