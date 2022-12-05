@@ -56,9 +56,6 @@ class Arena():
                 log.debug(f'valids = {valids}')
                 assert valids[action] > 0
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
-
-            if action == self.game.n * self.game.n:
-                players[0], players[2] = players[2], players[0]
         if verbose:
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
@@ -80,8 +77,7 @@ class Arena():
         oneWon = 0
         twoWon = 0
         draws = 0
-        for i in tqdm(range(num), desc="Arena.playGames (1)"):
-            print(i)
+        for _ in tqdm(range(num), desc="Arena.playGames (1)"):
             gameResult = self.playGame(verbose=verbose)
             if gameResult == 1:
                 oneWon += 1
@@ -92,9 +88,8 @@ class Arena():
 
         self.player1, self.player2 = self.player2, self.player1
 
-        for i in tqdm(range(num), desc="Arena.playGames (2)"):
+        for _ in tqdm(range(num), desc="Arena.playGames (2)"):
             gameResult = self.playGame(verbose=verbose)
-            print(i)
             if gameResult == -1:
                 oneWon += 1
             elif gameResult == 1:
