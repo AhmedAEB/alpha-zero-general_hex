@@ -82,12 +82,12 @@ class Game():
         # Check if player 1 has a winning path from top to bottom
         for i in range(self.n):
             if self.DFS(board, 1, 0, i, [[False] * self.n for _ in range(self.n)]):
-                return 1 * (-1 if swap else 1)
+                return player
                 
         # Check if player 2 has a winning path from left to right
         for i in range(self.n):
             if self.DFS(board, -1, i, 0, [[False] * self.n for _ in range(self.n)]):
-                return -1 * (-1 if swap else 1)
+                return player * -1
 
         return 0
     
