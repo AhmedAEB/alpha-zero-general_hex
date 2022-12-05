@@ -128,6 +128,12 @@ class Game():
     @staticmethod
     def display(board):
         n = board.shape[0]-1
+        
+        board = np.copy(board)
+        
+        swap = board[-1][-1]
+        
+        if swap: board *= -1
 
         for y in range(n):
             print(y, "|", end="")
