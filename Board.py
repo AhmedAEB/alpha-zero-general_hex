@@ -13,6 +13,32 @@ class Board():
     # add [][] indexer syntax to the Board
     def __getitem__(self, index):
         return self.pieces[index]
+    
+    def execute_swap(self):
+        """
+        Perform the swap move on the board.
+        
+        1. Ensures swap has not already been played.
+        2. Changes piece ownership.
+        3. Swaps x, y of piece.
+        """
+        
+        assert not self[-1][-1]
+        assert self.getNPlaced() == 1
+        
+        self.pieces[-1] = 1
+        
+        # Find x, y of only piece
+        x, y = 0, 0
+        for i in range(self.n):
+            for j in range(self.n):
+                if self[i][j] != 0:
+                    x, y = i, j
+                    break
+                
+        self[x][y] = 0
+        
+        self[y][x] = -1
 
     def getNPlacedC(self, colour):
         swap = self[-1][-1]

@@ -31,8 +31,7 @@ class Game():
         b.pieces = np.copy(board)
         
         if action == self.n * self.n:
-            b.pieces *= -1
-            b.pieces[-1] = 1
+            b.execute_swap()
         else:
             move = (int(action / self.n), action % self.n)
             b.execute_move(move, b.getNextPlayer())
